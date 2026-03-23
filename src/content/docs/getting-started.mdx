@@ -1,0 +1,51 @@
+---
+title: Getting Started
+description: Get your API key and make your first request to the Gnosis API.
+---
+
+## 1. Get an API key
+
+Sign up at [gnosistool.com/signup](/signup/) to get your free API key. The free tier includes 1,000 requests per day.
+
+## 2. Make your first request
+
+```bash
+curl https://api.gnosistool.com/v1/people/abraham \
+  -H "X-API-Key: gn_your_key_here"
+```
+
+## 3. Explore the response
+
+```json
+{
+  "data": {
+    "slug": "abraham",
+    "uuid": "d21c0917-5fed-52d2-b57b-86a417195752",
+    "name": "Abraham",
+    "gender": "Male",
+    "birth_year_display": "1998 BC",
+    "birth_place": "ur",
+    "father": "terah",
+    "children": ["isaac", "ishmael-son-of-abraham", "midian", "zimran", ...],
+    "partners": ["sarah", "hagar", "keturah"],
+    "verse_count": 290,
+    "name_meaning": "Father of a multitude"
+  }
+}
+```
+
+## 4. Try it in JavaScript
+
+```javascript
+const response = await fetch('https://api.gnosistool.com/v1/people/abraham', {
+  headers: { 'X-API-Key': 'gn_your_key_here' },
+});
+const { data } = await response.json();
+console.log(data.name); // "Abraham"
+```
+
+## Next steps
+
+- [Authentication](/docs/authentication/) — rate limits and tiers
+- [Endpoints](/docs/endpoints/people/) — full API reference
+- [Data Model](/docs/data-model/) — entity types and relationships

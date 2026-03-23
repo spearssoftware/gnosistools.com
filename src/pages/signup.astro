@@ -1,0 +1,175 @@
+---
+import Landing from '../layouts/Landing.astro';
+---
+
+<Landing title="Sign Up - Gnosis API">
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">Gnosis</a>
+      <div class="nav-links">
+        <a href="/docs/getting-started/">Docs</a>
+        <a href="/pricing/">Pricing</a>
+        <a href="/signup/" class="btn-nav">Get API Key</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="signup">
+    <div class="container">
+      <h1>Get your API key</h1>
+      <p class="signup-subtitle">Start building with the Gnosis API for free. 1,000 requests per day, no credit card required.</p>
+
+      <form class="signup-form" id="signup-form">
+        <input
+          type="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+        />
+        <button type="submit">Get API Key</button>
+      </form>
+
+      <div class="result" id="result" style="display: none;">
+        <p>API key registration coming soon. Join the waitlist and we'll notify you when it's ready.</p>
+      </div>
+    </div>
+  </section>
+</Landing>
+
+<script>
+  const form = document.getElementById('signup-form') as HTMLFormElement;
+  const result = document.getElementById('result') as HTMLDivElement;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    form.style.display = 'none';
+    result.style.display = 'block';
+  });
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e2e8f0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .btn-nav {
+    background: #6366f1;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .signup {
+    padding: 160px 0 80px;
+    text-align: center;
+  }
+
+  .signup h1 {
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .signup-subtitle {
+    color: #94a3b8;
+    font-size: 18px;
+    margin-bottom: 40px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .signup-form {
+    display: flex;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .signup-form input {
+    flex: 1;
+    padding: 14px 18px;
+    font-size: 16px;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    background: #1e293b;
+    color: #e2e8f0;
+    outline: none;
+  }
+
+  .signup-form input:focus {
+    border-color: #6366f1;
+  }
+
+  .signup-form button {
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .signup-form button:hover {
+    background: #818cf8;
+  }
+
+  .result {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    color: #94a3b8;
+  }
+
+  @media (max-width: 640px) {
+    .signup-form {
+      flex-direction: column;
+    }
+  }
+</style>

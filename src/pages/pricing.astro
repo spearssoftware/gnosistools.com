@@ -1,0 +1,202 @@
+---
+import Landing from '../layouts/Landing.astro';
+---
+
+<Landing title="Pricing - Gnosis API">
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">Gnosis</a>
+      <div class="nav-links">
+        <a href="/docs/getting-started/">Docs</a>
+        <a href="/pricing/">Pricing</a>
+        <a href="/signup/" class="btn-nav">Get API Key</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="pricing">
+    <div class="container">
+      <h1>Simple pricing</h1>
+      <p class="pricing-subtitle">Start free. Upgrade when you need more.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h2>Free</h2>
+          <div class="price">$0<span>/month</span></div>
+          <ul>
+            <li>1,000 requests/day</li>
+            <li>All REST endpoints</li>
+            <li>Full-text search</li>
+            <li>Community support</li>
+          </ul>
+          <a href="/signup/" class="btn-primary">Get Started Free</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <h2>Pro</h2>
+          <div class="price">TBD<span>/month</span></div>
+          <ul>
+            <li>10,000 requests/day</li>
+            <li>All REST endpoints</li>
+            <li>Semantic search</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="mailto:hello@gnosistool.com" class="btn-primary">Contact Us</a>
+        </div>
+      </div>
+
+      <p class="open-source-note">
+        The raw dataset is always free and open source under CC-BY-SA 4.0.
+        <a href="https://github.com/kevswanson/gnosis">Download from GitHub.</a>
+      </p>
+    </div>
+  </section>
+</Landing>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e2e8f0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .btn-nav {
+    background: #6366f1;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .pricing {
+    padding: 140px 0 80px;
+    text-align: center;
+  }
+
+  .pricing h1 {
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .pricing-subtitle {
+    color: #94a3b8;
+    font-size: 18px;
+    margin-bottom: 48px;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 720px;
+    margin: 0 auto 48px;
+  }
+
+  .pricing-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 36px;
+    text-align: left;
+  }
+
+  .pricing-card.featured {
+    border-color: #6366f1;
+  }
+
+  .pricing-card h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .price {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: #818cf8;
+  }
+
+  .price span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #64748b;
+  }
+
+  .pricing-card ul {
+    list-style: none;
+    margin-bottom: 28px;
+  }
+
+  .pricing-card li {
+    padding: 8px 0;
+    color: #94a3b8;
+    border-bottom: 1px solid #334155;
+    font-size: 15px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: #6366f1;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn-primary:hover {
+    background: #818cf8;
+    color: #fff;
+  }
+
+  .open-source-note {
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  @media (max-width: 640px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,395 @@
+---
+import Landing from '../layouts/Landing.astro';
+import { SearchBox } from '../components/SearchBox';
+---
+
+<Landing title="Gnosis - The Biblical Knowledge Graph API">
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">Gnosis</a>
+      <div class="nav-links">
+        <a href="/docs/getting-started/">Docs</a>
+        <a href="/pricing/">Pricing</a>
+        <a href="/signup/" class="btn-nav">Get API Key</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <h1>The Biblical Knowledge Graph API</h1>
+      <p class="subtitle">
+        People, places, events, cross-references, Strong's concordance, Hebrew morphology, and semantic search — all through a single REST API.
+      </p>
+      <div class="search-wrapper">
+        <SearchBox client:load />
+      </div>
+      <div class="hero-cta">
+        <a href="/docs/getting-started/" class="btn-primary">Get Started</a>
+        <a href="https://github.com/kevswanson/gnosis" class="btn-secondary">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat">
+        <span class="stat-number">3,000+</span>
+        <span class="stat-label">People</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">1,200+</span>
+        <span class="stat-label">Places</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">900+</span>
+        <span class="stat-label">Events</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">70,000+</span>
+        <span class="stat-label">Cross-References</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>Everything you need to build Bible software</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>People & Places</h3>
+          <p>3,000+ biblical figures with family trees, birth/death locations, and verse references. 1,200+ places with coordinates.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Events & Timeline</h3>
+          <p>900+ events with participants, locations, chronological ordering, and hierarchical relationships.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Cross-References</h3>
+          <p>70,000+ verse-to-verse cross-references with community voting scores from the Scrollmapper dataset.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Strong's Concordance</h3>
+          <p>Complete Hebrew and Greek lexicon entries with lemmas, transliterations, definitions, and KJV usage notes.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Hebrew Morphology</h3>
+          <p>Word-level Hebrew text with morphological tags, lemmas, and Strong's number linkage for every OT verse.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Semantic Search</h3>
+          <p>Natural language queries powered by vector embeddings. Find passages by meaning, not just keywords. <em>Coming soon.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="code-example">
+    <div class="container">
+      <h2>Simple to use</h2>
+      <div class="code-block">
+        <div class="code-header">
+          <span>Request</span>
+        </div>
+        <pre><code>curl https://api.gnosistool.com/v1/people/abraham \
+  -H "X-API-Key: gn_your_key_here"</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span>Response</span>
+        </div>
+        <pre><code>{`{
+  "data": {
+    "slug": "abraham",
+    "uuid": "a1b2c3d4-...",
+    "name": "Abraham",
+    "gender": "Male",
+    "birth_year_display": "2166 BC",
+    "birth_place": "ur",
+    "father": "terah",
+    "children": ["isaac", "ishmael", "zimran", "jokshan", ...],
+    "verse_count": 290,
+    "name_meaning": "Father of a multitude"
+  }
+}`}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="open-data">
+    <div class="container">
+      <h2>Built on open data</h2>
+      <p>
+        The Gnosis dataset is open source under CC-BY-SA 4.0. Download the raw JSON or SQLite database from
+        <a href="https://github.com/kevswanson/gnosis">GitHub</a> and use it however you want.
+        The API adds convenience, auth, rate limiting, and upcoming semantic search.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Gnosis &middot; <a href="/docs/getting-started/">Docs</a> &middot; <a href="/pricing/">Pricing</a> &middot; <a href="https://github.com/kevswanson/gnosis">GitHub</a></p>
+    </div>
+  </footer>
+</Landing>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e2e8f0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .btn-nav {
+    background: #6366f1;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .hero {
+    padding: 160px 0 80px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #e2e8f0, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: #94a3b8;
+    max-width: 640px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .search-wrapper {
+    margin-bottom: 32px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background: #6366f1;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #818cf8;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: #6366f1;
+    color: #e2e8f0;
+  }
+
+  .stats {
+    padding: 60px 0;
+    border-top: 1px solid #1e293b;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 36px;
+    font-weight: 800;
+    color: #818cf8;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .features {
+    padding: 80px 0;
+  }
+
+  .features h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 48px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #e2e8f0;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .code-example {
+    padding: 80px 0;
+    border-top: 1px solid #1e293b;
+  }
+
+  .code-example h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 32px;
+  }
+
+  .code-block {
+    max-width: 640px;
+    margin: 0 auto 16px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .code-header {
+    padding: 8px 16px;
+    background: #334155;
+    font-size: 12px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .code-block pre {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: #e2e8f0;
+    line-height: 1.6;
+  }
+
+  .open-data {
+    padding: 80px 0;
+    text-align: center;
+    border-top: 1px solid #1e293b;
+  }
+
+  .open-data h2 {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .open-data p {
+    font-size: 16px;
+    color: #94a3b8;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .footer {
+    padding: 32px 0;
+    border-top: 1px solid #1e293b;
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+    .nav-links a:not(.btn-nav) {
+      display: none;
+    }
+  }
+</style>
