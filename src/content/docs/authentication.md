@@ -8,7 +8,7 @@ description: API key usage, rate limits, and tiers.
 All requests require an API key passed via the `X-API-Key` header.
 
 ```bash
-curl https://api.gnosistool.com/v1/people \
+curl https://api.gnosistools.com/v1/people \
   -H "X-API-Key: gn_your_key_here"
 ```
 
@@ -26,7 +26,7 @@ When you exceed your rate limit, the API returns `429 Too Many Requests` with a 
 ## Check Your Usage
 
 ```bash
-curl https://api.gnosistool.com/v1/usage \
+curl https://api.gnosistools.com/v1/usage \
   -H "X-API-Key: gn_your_key_here"
 ```
 

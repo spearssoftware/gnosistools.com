@@ -21,7 +21,7 @@ GET /v1/people
 ### Example
 
 ```bash
-curl "https://api.gnosistool.com/v1/people?q=abraham&limit=5" \
+curl "https://api.gnosistools.com/v1/people?q=abraham&limit=5" \
   -H "X-API-Key: gn_your_key_here"
 ```
 
@@ -49,7 +49,7 @@ GET /v1/people/{slug}
 ### Example
 
 ```bash
-curl https://api.gnosistool.com/v1/people/abraham \
+curl https://api.gnosistools.com/v1/people/abraham \
   -H "X-API-Key: gn_your_key_here"
 ```
 

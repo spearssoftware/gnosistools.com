@@ -14,7 +14,7 @@ GET /v1/hebrew/{osis_ref}
 ### Example
 
 ```bash
-curl https://api.gnosistool.com/v1/hebrew/Gen.1.1 \
+curl https://api.gnosistools.com/v1/hebrew/Gen.1.1 \
   -H "X-API-Key: gn_your_key_here"
 ```
 

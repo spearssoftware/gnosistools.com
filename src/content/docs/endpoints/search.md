@@ -22,7 +22,7 @@ GET /v1/search?q={query}
 ### Example
 
 ```bash
-curl "https://api.gnosistool.com/v1/search?q=moses" \
+curl "https://api.gnosistools.com/v1/search?q=moses" \
   -H "X-API-Key: gn_your_key_here"
 ```
 

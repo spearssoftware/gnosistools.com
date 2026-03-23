@@ -14,7 +14,7 @@ Numbers are prefixed with `H` (Hebrew) or `G` (Greek).
 ### Example
 
 ```bash
-curl https://api.gnosistool.com/v1/strongs/H1 \
+curl https://api.gnosistools.com/v1/strongs/H1 \
   -H "X-API-Key: gn_your_key_here"
 ```
 

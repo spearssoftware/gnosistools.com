@@ -22,7 +22,7 @@ GET /v1/places
 ### Example
 
 ```bash
-curl "https://api.gnosistool.com/v1/places?q=jerusalem" \
+curl "https://api.gnosistools.com/v1/places?q=jerusalem" \
   -H "X-API-Key: gn_your_key_here"
 ```
 
