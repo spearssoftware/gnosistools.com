@@ -8,7 +8,7 @@ export default defineConfig({
     starlight({
       title: 'Gnosis',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/kevswanson/gnosis' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/spearssoftware/gnosis' },
       ],
       sidebar: [
         { label: 'Getting Started', slug: 'getting-started' },
