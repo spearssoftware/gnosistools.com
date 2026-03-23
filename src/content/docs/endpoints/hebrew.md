@@ -29,4 +29,4 @@ curl https://api.gnosistool.com/v1/hebrew/Gen.1.1 \
 | `strongs_number` | string | Linked Strong's number |
 | `morph` | string | Morphological tag |
 
-The `strongs_number` can be used to look up the full lexicon entry via the [Strong's endpoint](/docs/endpoints/strongs/).
+The `strongs_number` can be used to look up the full lexicon entry via the [Strong's endpoint](/endpoints/strongs/).

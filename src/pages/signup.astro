@@ -2,12 +2,12 @@
 import Landing from '../layouts/Landing.astro';
 ---
 
-<Landing title="Sign Up - Gnosis API">
+<Landing title="Gnosis - Sign Up">
   <nav class="nav">
     <div class="nav-inner">
       <a href="/" class="logo">Gnosis</a>
       <div class="nav-links">
-        <a href="/docs/getting-started/">Docs</a>
+        <a href="/getting-started/">Docs</a>
         <a href="/pricing/">Pricing</a>
         <a href="/signup/" class="btn-nav">Get API Key</a>
       </div>
@@ -34,6 +34,11 @@ import Landing from '../layouts/Landing.astro';
       </div>
     </div>
   </section>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 <a href="https://spearssoftware.com">Spears Software</a> &middot; <a href="/getting-started/">Docs</a> &middot; <a href="/pricing/">Pricing</a> &middot; <a href="https://github.com/kevswanson/gnosis">GitHub</a></p>
+    </div>
+  </footer>
 </Landing>
 
 <script>
@@ -165,6 +170,14 @@ import Landing from '../layouts/Landing.astro';
     border: 1px solid #334155;
     border-radius: 12px;
     color: #94a3b8;
+  }
+
+  .footer {
+    padding: 32px 0;
+    border-top: 1px solid #1e293b;
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
   }
 
   @media (max-width: 640px) {
