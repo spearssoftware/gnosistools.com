@@ -20,17 +20,33 @@ import Landing from '../layouts/Landing.astro';
       <p class="signup-subtitle">Start building with the Gnosis API for free. 1,000 requests per day, no credit card required.</p>
 
       <form class="signup-form" id="signup-form">
-        <input
-          type="email"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <button type="submit">Get API Key</button>
+        <div class="form-row">
+          <input
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+          />
+          <button type="submit" id="submit-btn">Get API Key</button>
+        </div>
+        <div class="turnstile-row">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACvCAsyh8OPexFCf"></div>
+        </div>
       </form>
 
+      <div class="error-msg" id="error-msg" style="display: none;"></div>
+
       <div class="result" id="result" style="display: none;">
-        <p>API key registration coming soon. Join the waitlist and we'll notify you when it's ready.</p>
+        <div class="replaced-warning" id="replaced-warning" style="display: none;">
+          Your previous API key has been disabled and replaced by this new one.
+        </div>
+        <p>Here's your API key:</p>
+        <div class="key-display">
+          <code id="api-key"></code>
+          <button class="copy-btn" id="copy-btn" type="button">Copy</button>
+        </div>
+        <p class="save-note" id="save-note">Save this key somewhere safe — it cannot be retrieved later.</p>
+        <a href="/getting-started/" class="btn-docs">Read the docs to get started</a>
       </div>
     </div>
   </section>
@@ -41,15 +57,76 @@ import Landing from '../layouts/Landing.astro';
   </footer>
 </Landing>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 <script>
   const form = document.getElementById('signup-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const result = document.getElementById('result') as HTMLDivElement;
+  const errorMsg = document.getElementById('error-msg') as HTMLDivElement;
+  const apiKeyEl = document.getElementById('api-key') as HTMLElement;
+  const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement;
+  const replacedWarning = document.getElementById('replaced-warning') as HTMLDivElement;
+  const saveNote = document.getElementById('save-note') as HTMLParagraphElement;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    form.style.display = 'none';
-    result.style.display = 'block';
+    errorMsg.style.display = 'none';
+
+    var turnstileResponse = turnstile.getResponse();
+
+    if (!turnstileResponse) {
+      showError('Please complete the verification.');
+      return;
+    }
+
+    const email = (form.querySelector('input[name="email"]') as HTMLInputElement).value;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Creating...';
+
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, turnstileToken: turnstileResponse }),
+      });
+
+      const body = await res.json();
+
+      if (!res.ok) {
+        showError(body.error || 'Something went wrong. Please try again.');
+        turnstile.reset();
+        return;
+      }
+
+      form.style.display = 'none';
+      apiKeyEl.textContent = body.apiKey;
+      if (body.replaced) {
+        replacedWarning.style.display = 'block';
+      }
+      if (body.emailSent) {
+        saveNote.textContent = "Save this key — it's also been sent to your email.";
+      }
+      result.style.display = 'block';
+    } catch {
+      showError('Network error. Please try again.');
+      turnstile.reset();
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Get API Key';
+    }
   });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(apiKeyEl.textContent || '');
+    copyBtn.textContent = 'Copied!';
+    setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+  });
+
+  function showError(msg: string) {
+    errorMsg.textContent = msg;
+    errorMsg.style.display = 'block';
+  }
 </script>
 
 <style>
@@ -125,10 +202,19 @@ import Landing from '../layouts/Landing.astro';
   }
 
   .signup-form {
-    display: flex;
-    gap: 12px;
     max-width: 480px;
     margin: 0 auto;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .turnstile-row {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
   }
 
   .signup-form input {
@@ -146,7 +232,7 @@ import Landing from '../layouts/Landing.astro';
     border-color: #6366f1;
   }
 
-  .signup-form button {
+  .signup-form button[type="submit"] {
     padding: 14px 24px;
     font-size: 16px;
     font-weight: 600;
@@ -158,8 +244,24 @@ import Landing from '../layouts/Landing.astro';
     white-space: nowrap;
   }
 
-  .signup-form button:hover {
+  .signup-form button[type="submit"]:hover {
     background: #818cf8;
+  }
+
+  .signup-form button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .error-msg {
+    max-width: 480px;
+    margin: 16px auto 0;
+    padding: 12px 16px;
+    background: #451a1a;
+    border: 1px solid #7f1d1d;
+    border-radius: 10px;
+    color: #fca5a5;
+    font-size: 14px;
   }
 
   .result {
@@ -172,6 +274,71 @@ import Landing from '../layouts/Landing.astro';
     color: #94a3b8;
   }
 
+  .replaced-warning {
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    background: #451a00;
+    border: 1px solid #7c4a00;
+    border-radius: 8px;
+    color: #fbbf24;
+    font-size: 14px;
+  }
+
+  .key-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0 16px;
+  }
+
+  .key-display code {
+    flex: 1;
+    font-size: 14px;
+    color: #a5f3fc;
+    word-break: break-all;
+  }
+
+  .copy-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #334155;
+    color: #e2e8f0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover {
+    background: #475569;
+  }
+
+  .save-note {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+  }
+
+  .btn-docs {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #6366f1;
+    color: #fff !important;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .btn-docs:hover {
+    background: #818cf8;
+  }
+
   .footer {
     padding: 32px 0;
     border-top: 1px solid #1e293b;
@@ -181,7 +348,7 @@ import Landing from '../layouts/Landing.astro';
   }
 
   @media (max-width: 640px) {
-    .signup-form {
+    .form-row {
       flex-direction: column;
     }
   }
