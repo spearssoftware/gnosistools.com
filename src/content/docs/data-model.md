@@ -50,6 +50,12 @@ Word-level Old Testament data with morphological tags and Strong's linkage.
 ### Lexicon
 Hebrew lexicon entries with TWOT (Theological Wordbook of the OT) references.
 
+### Greek Morphology
+Word-level New Testament data with morphological tags and Strong's linkage.
+
+### Greek Lexicon
+Greek lexicon entries from the Dodson dataset with Goodrick-Kohlenberger number references.
+
 ## Relationships
 
 ```
@@ -61,6 +67,7 @@ Event ──locations──> Place
 Event ──parent_event──> Event
 Person ──people_groups──> PeopleGroup
 HebrewWord ──strongs_number──> Strong's
+GreekWord ──strongs_number──> Strong's
 All entities ──verses──> Verse (OSIS refs)
 ```
 

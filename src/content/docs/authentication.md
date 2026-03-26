@@ -16,10 +16,10 @@ Keys are prefixed with `gn_` and generated when you sign up.
 
 ## Rate Limits
 
-| Tier | Requests/Day | Semantic Search |
-|------|-------------|-----------------|
-| Free | 1,000 | No |
-| Pro | 10,000 | Yes |
+| Tier | Requests/Day |
+|------|-------------|
+| Free | 1,000 |
+| Pro | 10,000 |
 
 When you exceed your rate limit, the API returns `429 Too Many Requests` with a `Retry-After` header.
 
