@@ -1,13 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 
-interface SearchResult {
+type SearchMode = 'semantic' | 'name';
+
+interface NameResult {
   slug: string;
   name: string;
   entity_type: string;
   uuid: string;
 }
 
-const FALLBACK_RESULTS: SearchResult[] = [
+interface SemanticResult {
+  slug: string;
+  type: string;
+  text: string;
+  score: number;
+}
+
+const FALLBACK_RESULTS: NameResult[] = [
   { slug: 'abraham', name: 'Abraham', entity_type: 'person', uuid: '' },
   { slug: 'moses', name: 'Moses', entity_type: 'person', uuid: '' },
   { slug: 'david', name: 'David', entity_type: 'person', uuid: '' },
@@ -29,16 +38,22 @@ const TYPE_COLORS: Record<string, string> = {
   group: '#ec4899',
   dictionary: '#8b5cf6',
   topic: '#06b6d4',
+  verse: '#3b82f6',
+  strongs: '#f97316',
+  lexicon: '#14b8a6',
+  greek_lexicon: '#14b8a6',
 };
 
-function fallbackSearch(q: string): SearchResult[] {
+function fallbackSearch(q: string): NameResult[] {
   const lower = q.toLowerCase();
   return FALLBACK_RESULTS.filter(r => r.name.toLowerCase().includes(lower));
 }
 
 export function SearchBox() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [mode, setMode] = useState<SearchMode>('semantic');
+  const [nameResults, setNameResults] = useState<NameResult[]>([]);
+  const [semanticResults, setSemanticResults] = useState<SemanticResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,7 +61,8 @@ export function SearchBox() {
 
   const search = async (q: string) => {
     if (!q.trim()) {
-      setResults([]);
+      setNameResults([]);
+      setSemanticResults([]);
       setIsOpen(false);
       return;
     }
@@ -54,20 +70,37 @@ export function SearchBox() {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
-    try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
-        signal: abortRef.current.signal,
-      });
-      if (!res.ok) throw new Error('API error');
-      const body = await res.json();
-      const data = body.data || [];
-      setResults(data);
-      setIsOpen(data.length > 0);
-    } catch (e) {
-      if ((e as Error).name === 'AbortError') return;
-      const data = fallbackSearch(q);
-      setResults(data);
-      setIsOpen(data.length > 0);
+    if (mode === 'semantic') {
+      try {
+        const res = await fetch(`/api/semantic-search?q=${encodeURIComponent(q)}`, {
+          signal: abortRef.current.signal,
+        });
+        if (!res.ok) throw new Error('API error');
+        const body = await res.json();
+        const data: SemanticResult[] = body.data || [];
+        setSemanticResults(data);
+        setIsOpen(data.length > 0);
+      } catch (e) {
+        if ((e as Error).name === 'AbortError') return;
+        setSemanticResults([]);
+        setIsOpen(false);
+      }
+    } else {
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
+          signal: abortRef.current.signal,
+        });
+        if (!res.ok) throw new Error('API error');
+        const body = await res.json();
+        const data: NameResult[] = body.data || [];
+        setNameResults(data);
+        setIsOpen(data.length > 0);
+      } catch (e) {
+        if ((e as Error).name === 'AbortError') return;
+        const data = fallbackSearch(q);
+        setNameResults(data);
+        setIsOpen(data.length > 0);
+      }
     }
   };
 
@@ -77,6 +110,16 @@ export function SearchBox() {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => search(value), 300);
   };
+
+  const handleModeChange = (newMode: SearchMode) => {
+    setMode(newMode);
+    setNameResults([]);
+    setSemanticResults([]);
+    setIsOpen(false);
+  };
+
+  const results = mode === 'semantic' ? semanticResults : nameResults;
+  const hasResults = results.length > 0;
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -90,12 +133,35 @@ export function SearchBox() {
 
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%', maxWidth: '640px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
+        {(['semantic', 'name'] as const).map(m => (
+          <button
+            key={m}
+            onClick={() => handleModeChange(m)}
+            style={{
+              padding: '6px 14px',
+              fontSize: '13px',
+              fontWeight: 600,
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+              background: mode === m ? '#3b82f6' : '#334155',
+              color: mode === m ? '#fff' : '#94a3b8',
+              transition: 'background 0.15s, color 0.15s',
+            }}
+          >
+            {m === 'semantic' ? 'Semantic' : 'Name'}
+          </button>
+        ))}
+      </div>
       <input
         type="text"
         value={query}
         onChange={handleChange}
-        onFocus={() => results.length > 0 && setIsOpen(true)}
-        placeholder="Search the biblical knowledge graph..."
+        onFocus={() => hasResults && setIsOpen(true)}
+        placeholder={mode === 'semantic'
+          ? 'Ask anything... "verses about forgiveness"'
+          : 'Search by name... "Moses"'}
         style={{
           width: '100%',
           padding: '16px 20px',
@@ -123,35 +189,72 @@ export function SearchBox() {
           maxHeight: '400px',
           overflowY: 'auto',
         }}>
-          {results.map(r => (
-            <div
-              key={`${r.entity_type}-${r.slug}`}
-              style={{
-                padding: '12px 16px',
-                borderBottom: '1px solid #334155',
-                cursor: 'pointer',
-                transition: 'background 0.15s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#334155')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontWeight: 600, fontSize: '16px' }}>{r.name}</span>
-                <span style={{
-                  fontSize: '11px',
-                  padding: '2px 8px',
-                  borderRadius: '9999px',
-                  background: (TYPE_COLORS[r.entity_type] || '#64748b') + '22',
-                  color: TYPE_COLORS[r.entity_type] || '#64748b',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}>
-                  {r.entity_type}
-                </span>
-              </div>
-            </div>
-          ))}
+          {mode === 'semantic'
+            ? semanticResults.map(r => {
+                const displayText = r.text.length > 100 ? r.text.slice(0, 100) + '...' : r.text;
+                return (
+                  <div
+                    key={`${r.type}-${r.slug}`}
+                    style={{
+                      padding: '12px 16px',
+                      borderBottom: '1px solid #334155',
+                      cursor: 'pointer',
+                      transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = '#334155')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <span style={{
+                        fontSize: '11px',
+                        padding: '2px 8px',
+                        borderRadius: '9999px',
+                        background: (TYPE_COLORS[r.type] || '#64748b') + '22',
+                        color: TYPE_COLORS[r.type] || '#64748b',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                      }}>
+                        {r.type}
+                      </span>
+                      <span style={{ fontSize: '12px', color: '#64748b' }}>{r.slug}</span>
+                    </div>
+                    <div style={{ fontSize: '14px', color: '#cbd5e1', lineHeight: '1.4' }}>
+                      {displayText}
+                    </div>
+                  </div>
+                );
+              })
+            : nameResults.map(r => (
+                <div
+                  key={`${r.entity_type}-${r.slug}`}
+                  style={{
+                    padding: '12px 16px',
+                    borderBottom: '1px solid #334155',
+                    cursor: 'pointer',
+                    transition: 'background 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.background = '#334155')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontWeight: 600, fontSize: '16px' }}>{r.name}</span>
+                    <span style={{
+                      fontSize: '11px',
+                      padding: '2px 8px',
+                      borderRadius: '9999px',
+                      background: (TYPE_COLORS[r.entity_type] || '#64748b') + '22',
+                      color: TYPE_COLORS[r.entity_type] || '#64748b',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                    }}>
+                      {r.entity_type}
+                    </span>
+                  </div>
+                </div>
+              ))
+          }
         </div>
       )}
     </div>
