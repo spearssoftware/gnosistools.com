@@ -19,7 +19,7 @@ import { SearchBox } from '../components/SearchBox';
     <div class="container">
       <h1>The Biblical Knowledge Graph API</h1>
       <p class="subtitle">
-        People, places, events, cross-references, Strong's concordance, Hebrew morphology, and semantic search — all through a single REST API.
+        People, places, events, cross-references, Strong's concordance, Hebrew and Greek morphology — all through a single REST API.
       </p>
       <div class="search-wrapper">
         <SearchBox client:load />
@@ -77,8 +77,8 @@ import { SearchBox } from '../components/SearchBox';
           <p>Word-level Hebrew text with morphological tags, lemmas, and Strong's number linkage for every OT verse.</p>
         </div>
         <div class="feature-card">
-          <h3>Semantic Search</h3>
-          <p>Natural language queries powered by vector embeddings. Find passages by meaning, not just keywords. <em>Coming soon.</em></p>
+          <h3>Greek Morphology</h3>
+          <p>Word-level Greek text with morphological tags, lemmas, and Strong's number linkage for every NT verse. Includes Dodson lexicon.</p>
         </div>
       </div>
     </div>
@@ -122,7 +122,7 @@ import { SearchBox } from '../components/SearchBox';
       <p>
         The Gnosis dataset is open source under CC-BY-SA 4.0. Download the raw JSON or SQLite database from
         <a href="https://github.com/spearssoftware/gnosis">GitHub</a> and use it however you want.
-        The API adds convenience, auth, rate limiting, and upcoming semantic search.
+        The API adds convenience, auth, and rate limiting.
       </p>
     </div>
   </section>

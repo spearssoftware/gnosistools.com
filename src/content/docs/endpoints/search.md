@@ -1,6 +1,6 @@
 ---
 title: Search
-description: Full-text and semantic search across all entities.
+description: Full-text search across all entities.
 ---
 
 ## Full-Text Search
@@ -47,18 +47,3 @@ curl "https://api.gnosistools.com/v1/search?q=moses" \
 ```
 
 Results include matches from people, places, events, groups, dictionary entries, and topics.
-
-## Semantic Search (Coming Soon)
-
-```
-POST /v1/search/semantic
-```
-
-Natural language queries powered by vector embeddings. Available on the Pro tier.
-
-```json
-{
-  "query": "passages about forgiveness after betrayal",
-  "limit": 10
-}
-```

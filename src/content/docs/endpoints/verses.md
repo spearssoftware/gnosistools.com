@@ -5,7 +5,7 @@ description: Get entities for a verse and cross-references.
 
 ## Get Verse Entities
 
-Returns all people, places, and events mentioned in a verse.
+Returns all people, places, events, and topics mentioned in a verse.
 
 ```
 GET /v1/verses/{osis_ref}
@@ -24,7 +24,8 @@ curl https://api.gnosistools.com/v1/verses/Gen.12.1 \
     "osis_ref": "Gen.12.1",
     "people": ["abraham"],
     "places": ["haran"],
-    "events": ["call-of-abram"]
+    "events": ["call-of-abram"],
+    "topics": ["faith"]
   }
 }
 ```

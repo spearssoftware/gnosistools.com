@@ -3,6 +3,16 @@ title: Changelog
 description: Version history for the Gnosis API and dataset.
 ---
 
+## v1.1.0 — Greek & Groups
+
+- Greek morphology endpoint (`/v1/greek/{osis_ref}`) for word-level NT analysis
+- Greek lexicon endpoint (`/v1/greek-lexicon/{strongs_number}`) with Dodson data
+- Groups endpoint (`/v1/groups`) for people groups with member lists
+- Meta endpoint (`/v1/meta`) with dataset version and table counts
+- Usage endpoint (`/v1/usage`) for per-key rate limit info
+- Topics now included in verse entity responses
+- Removed placeholder semantic search documentation
+
 ## v1.0.0 — Initial Release
 
 - 3,000+ people with family trees and verse references
