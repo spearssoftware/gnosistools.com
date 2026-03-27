@@ -77,7 +77,7 @@ export function SearchBox() {
         });
         if (!res.ok) throw new Error('API error');
         const body = await res.json();
-        const data: SemanticResult[] = body.data || [];
+        const data: SemanticResult[] = Array.isArray(body) ? body : body.data || [];
         setSemanticResults(data);
         setIsOpen(data.length > 0);
       } catch (e) {
