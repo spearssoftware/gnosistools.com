@@ -1,0 +1,58 @@
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">Gnosis</a>
+    <div class="nav-links">
+      <a href="/getting-started/">Docs</a>
+      <a href="/developers/">Developers</a>
+      <a href="/signup/" class="btn-nav">Get API Key</a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1e293b;
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e2e8f0;
+  }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .nav-links a {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .btn-nav {
+    background: #6366f1;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  @media (max-width: 768px) {
+    .nav-links a:not(.btn-nav) {
+      display: none;
+    }
+  }
+</style>
