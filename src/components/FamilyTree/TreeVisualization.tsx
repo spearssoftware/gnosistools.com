@@ -25,10 +25,16 @@ interface LayoutLink {
   target: { x: number; y: number };
 }
 
-const NODE_W = 200;
 const NODE_H = 120;
 const CARD_W = 180;
 const CARD_H = 70;
+const MAX_SPREAD = 800;
+
+function siblingSpacing(count: number): number {
+  if (count <= 2) return 200;
+  const spacing = MAX_SPREAD / (count - 1);
+  return Math.max(spacing, CARD_W + 10);
+}
 
 // Recursively collect nodes from ancestor tree (parents go UP — negative Y)
 function collectAncestors(
@@ -51,9 +57,10 @@ function collectAncestors(
   }
 
   if (node.parents.length > 0) {
-    const totalWidth = (node.parents.length - 1) * NODE_W;
+    const spacing = siblingSpacing(node.parents.length);
+    const totalWidth = (node.parents.length - 1) * spacing;
     node.parents.forEach((parent, i) => {
-      const childX = x - totalWidth / 2 + i * NODE_W;
+      const childX = x - totalWidth / 2 + i * spacing;
       collectAncestors(parent, childX, depth + 1, nodes, links, { x, y }, visited);
     });
   }
@@ -80,9 +87,10 @@ function collectDescendants(
   }
 
   if (node.children.length > 0) {
-    const totalWidth = (node.children.length - 1) * NODE_W;
+    const spacing = siblingSpacing(node.children.length);
+    const totalWidth = (node.children.length - 1) * spacing;
     node.children.forEach((child, i) => {
-      const childX = x - totalWidth / 2 + i * NODE_W;
+      const childX = x - totalWidth / 2 + i * spacing;
       collectDescendants(child, childX, depth + 1, nodes, links, { x, y }, visited);
     });
   }
@@ -226,16 +234,17 @@ export function TreeVisualization({ rootNode, selectedSlug, onExpand, onSelect }
                 y={n.y - CARD_H / 2}
                 width={CARD_W}
                 height={CARD_H}
-                style={{ overflow: 'visible' }}
               >
-                <PersonNode
-                  person={n.treeNode.person}
-                  isSelected={isSelected}
-                  isExpandable={isExpandable}
-                  isLoading={n.treeNode.loading}
-                  onExpand={() => onExpand(n.slug)}
-                  onSelect={() => onSelect(n.slug)}
-                />
+                <div xmlns="http://www.w3.org/1999/xhtml">
+                  <PersonNode
+                    person={n.treeNode.person}
+                    isSelected={isSelected}
+                    isExpandable={isExpandable}
+                    isLoading={n.treeNode.loading}
+                    onExpand={() => onExpand(n.slug)}
+                    onSelect={() => onSelect(n.slug)}
+                  />
+                </div>
               </foreignObject>
             );
           })}
