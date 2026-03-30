@@ -1,0 +1,715 @@
+---
+import Landing from '../layouts/Landing.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<Landing title="Gnosis - Developers">
+  <Nav />
+
+  <section class="hero">
+    <div class="container">
+      <h1>Build with the Biblical<br /><span class="gradient">Knowledge Graph API</span></h1>
+      <p class="subtitle">
+        A single REST API for people, places, events, cross-references, Strong's concordance, and original language morphology.
+      </p>
+      <div class="hero-cta">
+        <a href="/getting-started/" class="btn-primary">Read the Docs</a>
+        <a href="/signup/" class="btn-secondary">Get API Key</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="use-cases">
+    <div class="container">
+      <h2>What you can build</h2>
+      <div class="use-cases-grid">
+        <div class="use-case-card">
+          <h3>Bible Applications</h3>
+          <p>Build study tools, reading plans, or devotional apps with rich biblical metadata — family trees, timelines, coordinates, and verse references all in one API.</p>
+        </div>
+        <div class="use-case-card">
+          <h3>Academic Research</h3>
+          <p>Query genealogies, timelines, and original language data for scholarly work. Access Hebrew and Greek morphology with Strong's linkage at the word level.</p>
+        </div>
+        <div class="use-case-card">
+          <h3>Church Technology</h3>
+          <p>Power sermon tools, small group content, or church websites with biblical data. Cross-references, topic tags, and event hierarchies ready to use.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container">
+      <h2>What's in the graph</h2>
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-number">3,067</span>
+          <span class="stat-label">People</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">1,269</span>
+          <span class="stat-label">Places</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">450</span>
+          <span class="stat-label">Events</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">14,197</span>
+          <span class="stat-label">Strong's Numbers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">29,363</span>
+          <span class="stat-label">Cross-References</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">5,745</span>
+          <span class="stat-label">Topics</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">10,221</span>
+          <span class="stat-label">Hebrew Words</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">7,939</span>
+          <span class="stat-label">Greek Words</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="code-examples">
+    <div class="container">
+      <h2>Simple to integrate</h2>
+
+      <div class="tabs" id="code-tabs">
+        <button class="tab active" data-tab="curl">curl</button>
+        <button class="tab" data-tab="js">JavaScript</button>
+        <button class="tab" data-tab="python">Python</button>
+      </div>
+
+      <div class="code-block" id="tab-curl">
+        <div class="code-header"><span>curl</span></div>
+        <pre><code>curl https://api.gnosistools.com/v1/people/abraham \
+  -H "X-API-Key: gn_your_key_here"</code></pre>
+      </div>
+
+      <div class="code-block hidden" id="tab-js">
+        <div class="code-header"><span>JavaScript</span></div>
+        <pre><code set:html={`const res = await fetch('https://api.gnosistools.com/v1/people/abraham', {
+  headers: { 'X-API-Key': 'gn_your_key' }
+});
+const { data } = await res.json();`}></code></pre>
+      </div>
+
+      <div class="code-block hidden" id="tab-python">
+        <div class="code-header"><span>Python</span></div>
+        <pre><code set:html={`import requests
+
+r = requests.get(
+    'https://api.gnosistools.com/v1/people/abraham',
+    headers={'X-API-Key': 'gn_your_key'}
+)
+data = r.json()['data']`}></code></pre>
+      </div>
+
+      <div class="code-block response-block">
+        <div class="code-header"><span>Response</span></div>
+        <pre><code set:html={`{
+  "data": {
+    "slug": "abraham",
+    "uuid": "a1b2c3d4-...",
+    "name": "Abraham",
+    "gender": "Male",
+    "birth_year_display": "1998 BC",
+    "birth_place": "ur",
+    "father": "terah",
+    "children": ["isaac", "ishmael", "zimran", "jokshan", ...],
+    "verse_count": 290,
+    "name_meaning": "Father of a multitude"
+  }
+}`}></code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <h2>Simple pricing</h2>
+      <p class="pricing-subtitle">Start free. Upgrade when you need more.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3>Free</h3>
+          <div class="price">$0<span>/month</span></div>
+          <ul>
+            <li>1,000 requests/day</li>
+            <li>All REST endpoints</li>
+            <li>Full-text search</li>
+            <li>Community support</li>
+          </ul>
+          <a href="/signup/" class="btn-primary">Get Started Free</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <h3>Need more?</h3>
+          <p class="pro-desc">If you're interested in higher rate limits, semantic search, or priority support, get in touch and we'll work something out.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div class="container">
+      <div class="contact-section">
+        <h2>Contact us</h2>
+        <form id="contact-form" class="contact-form">
+          <input type="hidden" name="subject" value="gnosis-pricing">
+          <div class="form-group">
+            <label for="contact-name">Name</label>
+            <input type="text" id="contact-name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" rows="4" required placeholder="Tell us about your project and what you need..."></textarea>
+          </div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACvCAsyh8OPexFCf"></div>
+          <button type="submit" class="btn-primary">Send Message</button>
+          <p id="form-status" class="form-status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="open-data">
+    <div class="container">
+      <p>
+        The Gnosis dataset is open source under CC-BY-SA 4.0. Download the raw JSON or SQLite database from
+        <a href="https://github.com/spearssoftware/gnosis">GitHub</a> and use it however you want.
+        The API adds convenience, auth, and rate limiting.
+      </p>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <div class="cta-buttons">
+        <a href="/getting-started/" class="btn-primary">Read the Docs</a>
+        <a href="/signup/" class="btn-secondary">Get API Key</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 <a href="https://spearssoftware.com">Spears Software</a> &middot; <a href="/getting-started/">Docs</a> &middot; <a href="/developers/">Developers</a> &middot; <a href="https://github.com/spearssoftware/gnosis">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script>
+    // Tab switcher
+    const tabBtns = document.querySelectorAll('.tab');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.code-block:not(.response-block)').forEach(block => {
+          block.classList.add('hidden');
+        });
+        const tabName = (btn as HTMLElement).dataset.tab;
+        const target = document.getElementById('tab-' + tabName);
+        if (target) target.classList.remove('hidden');
+      });
+    });
+
+    // Contact form
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var btn = this.querySelector('button[type="submit"]');
+      var status = document.getElementById('form-status');
+      var turnstileResponse = turnstile.getResponse();
+
+      if (!turnstileResponse) {
+        status.textContent = 'Please complete the verification.';
+        status.className = 'form-status error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      status.textContent = '';
+      status.className = 'form-status';
+
+      try {
+        var res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: this.elements.name.value,
+            email: this.elements.email.value,
+            message: this.elements.message.value,
+            subject: this.elements.subject.value,
+            turnstileToken: turnstileResponse
+          })
+        });
+        var data = await res.json();
+        if (data.success) {
+          this.innerHTML = '<div class="form-success"><p>Message sent! We\'ll get back to you soon.</p></div>';
+          return;
+        } else {
+          status.textContent = data.error || 'Something went wrong. Please try again.';
+          status.className = 'form-status error';
+        }
+      } catch {
+        status.textContent = 'Something went wrong. Please try again.';
+        status.className = 'form-status error';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    });
+  </script>
+</Landing>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .hero {
+    padding: 160px 0 80px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: #e2e8f0;
+  }
+
+  .gradient {
+    background: linear-gradient(135deg, #e2e8f0, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: #94a3b8;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: #6366f1;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: #818cf8;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: #6366f1;
+    color: #e2e8f0;
+  }
+
+  /* Use Cases */
+  .use-cases {
+    padding: 80px 0;
+    border-top: 1px solid #1e293b;
+  }
+
+  .use-cases h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 48px;
+  }
+
+  .use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .use-case-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .use-case-card h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #e2e8f0;
+  }
+
+  .use-case-card p {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  /* Stats */
+  .stats {
+    padding: 80px 0;
+    border-top: 1px solid #1e293b;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .stats h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 48px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 32px;
+    font-weight: 800;
+    color: #818cf8;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Code examples */
+  .code-examples {
+    padding: 80px 0;
+    border-top: 1px solid #1e293b;
+  }
+
+  .code-examples h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 32px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    max-width: 640px;
+    margin: 0 auto 0;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 8px 8px 0;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+    background: none;
+    border: none;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s;
+  }
+
+  .tab.active {
+    color: #e2e8f0;
+    background: #334155;
+  }
+
+  .tab:hover:not(.active) {
+    color: #94a3b8;
+  }
+
+  .code-block {
+    max-width: 640px;
+    margin: 0 auto 16px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+  }
+
+  .code-block.response-block {
+    border-radius: 12px;
+    margin-top: 16px;
+  }
+
+  .code-block.hidden {
+    display: none;
+  }
+
+  .code-header {
+    padding: 8px 16px;
+    background: #334155;
+    font-size: 12px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .code-block pre {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: #e2e8f0;
+    line-height: 1.6;
+  }
+
+  /* Pricing */
+  .pricing {
+    padding: 80px 0;
+    border-top: 1px solid #1e293b;
+    text-align: center;
+  }
+
+  .pricing h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .pricing-subtitle {
+    color: #94a3b8;
+    font-size: 18px;
+    margin-bottom: 48px;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .pricing-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 36px;
+    text-align: left;
+  }
+
+  .pricing-card.featured {
+    border-color: #6366f1;
+  }
+
+  .pricing-card h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .price {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: #818cf8;
+  }
+
+  .price span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #64748b;
+  }
+
+  .pricing-card ul {
+    list-style: none;
+    margin-bottom: 28px;
+  }
+
+  .pricing-card li {
+    padding: 8px 0;
+    color: #94a3b8;
+    border-bottom: 1px solid #334155;
+    font-size: 15px;
+  }
+
+  .pricing-card .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .pro-desc {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-top: 8px;
+  }
+
+  /* Contact */
+  .contact {
+    padding: 80px 0;
+    border-top: 1px solid #1e293b;
+  }
+
+  .contact-section {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .contact-section h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #94a3b8;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    background: #1e293b;
+    color: #e2e8f0;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #6366f1;
+  }
+
+  .form-status {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .form-status.error {
+    color: #ef4444;
+  }
+
+  .form-success {
+    text-align: center;
+    padding: 24px;
+    color: #10b981;
+    font-weight: 500;
+  }
+
+  /* Open data */
+  .open-data {
+    padding: 40px 0;
+    text-align: center;
+    border-top: 1px solid #1e293b;
+  }
+
+  .open-data p {
+    font-size: 15px;
+    color: #64748b;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* Final CTA */
+  .final-cta {
+    padding: 60px 0;
+    text-align: center;
+    border-top: 1px solid #1e293b;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .footer {
+    padding: 32px 0;
+    border-top: 1px solid #1e293b;
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  @media (max-width: 768px) {
+    .use-cases-grid {
+      grid-template-columns: 1fr;
+    }
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .hero-cta,
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

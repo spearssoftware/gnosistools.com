@@ -1,18 +1,10 @@
 ---
 import Landing from '../layouts/Landing.astro';
+import Nav from '../components/Nav.astro';
 ---
 
 <Landing title="Gnosis - Sign Up">
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="logo">Gnosis</a>
-      <div class="nav-links">
-        <a href="/getting-started/">Docs</a>
-        <a href="/pricing/">Pricing</a>
-        <a href="/signup/" class="btn-nav">Get API Key</a>
-      </div>
-    </div>
-  </nav>
+  <Nav />
 
   <section class="signup">
     <div class="container">
@@ -52,7 +44,7 @@ import Landing from '../layouts/Landing.astro';
   </section>
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2026 <a href="https://spearssoftware.com">Spears Software</a> &middot; <a href="/getting-started/">Docs</a> &middot; <a href="/pricing/">Pricing</a> &middot; <a href="https://github.com/spearssoftware/gnosis">GitHub</a></p>
+      <p>&copy; 2026 <a href="https://spearssoftware.com">Spears Software</a> &middot; <a href="/getting-started/">Docs</a> &middot; <a href="/developers/">Developers</a> &middot; <a href="https://github.com/spearssoftware/gnosis">GitHub</a></p>
     </div>
   </footer>
 </Landing>
@@ -130,51 +122,6 @@ import Landing from '../layouts/Landing.astro';
 </script>
 
 <style>
-  .nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #1e293b;
-  }
-
-  .nav-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    font-size: 20px;
-    font-weight: 700;
-    color: #e2e8f0;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-  }
-
-  .nav-links a {
-    color: #94a3b8;
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .btn-nav {
-    background: #6366f1;
-    color: #fff !important;
-    padding: 8px 16px;
-    border-radius: 8px;
-  }
-
   .container {
     max-width: 1200px;
     margin: 0 auto;
