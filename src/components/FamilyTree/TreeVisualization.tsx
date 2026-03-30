@@ -109,8 +109,9 @@ function buildLayout(root: TreeNode): { nodes: LayoutNode[]; links: LayoutLink[]
   const rootPos = { x: 0, y: 0 };
   visitedAncestors.add(root.person.slug); // don't re-add root
   root.parents.forEach((parent, i) => {
-    const totalWidth = (root.parents.length - 1) * NODE_W;
-    const px = -totalWidth / 2 + i * NODE_W;
+    const spacing = siblingSpacing(root.parents.length);
+    const totalWidth = (root.parents.length - 1) * spacing;
+    const px = -totalWidth / 2 + i * spacing;
     collectAncestors(parent, px, 1, nodes, links, rootPos, visitedAncestors);
   });
 
