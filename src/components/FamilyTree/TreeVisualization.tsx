@@ -12,7 +12,6 @@ interface TreeVisualizationProps {
   onSelect: (slug: string) => void;
 }
 
-// Internal flat structure after layout
 interface LayoutNode {
   slug: string;
   treeNode: TreeNode;
@@ -36,62 +35,40 @@ function siblingSpacing(count: number): number {
   return Math.max(spacing, CARD_W + 10);
 }
 
-// Recursively collect nodes from ancestor tree (parents go UP — negative Y)
 function collectAncestors(
-  node: TreeNode,
-  x: number,
-  depth: number,
-  nodes: LayoutNode[],
-  links: LayoutLink[],
-  parentPos: { x: number; y: number } | null,
-  visited: Set<string>,
+  node: TreeNode, x: number, depth: number,
+  nodes: LayoutNode[], links: LayoutLink[],
+  parentPos: { x: number; y: number } | null, visited: Set<string>,
 ): void {
   if (visited.has(node.person.slug)) return;
   visited.add(node.person.slug);
-
   const y = -depth * NODE_H;
   nodes.push({ slug: node.person.slug, treeNode: node, x, y });
-
-  if (parentPos) {
-    links.push({ source: parentPos, target: { x, y } });
-  }
-
+  if (parentPos) links.push({ source: parentPos, target: { x, y } });
   if (node.parents.length > 0) {
     const spacing = siblingSpacing(node.parents.length);
     const totalWidth = (node.parents.length - 1) * spacing;
     node.parents.forEach((parent, i) => {
-      const childX = x - totalWidth / 2 + i * spacing;
-      collectAncestors(parent, childX, depth + 1, nodes, links, { x, y }, visited);
+      collectAncestors(parent, x - totalWidth / 2 + i * spacing, depth + 1, nodes, links, { x, y }, visited);
     });
   }
 }
 
-// Recursively collect nodes from descendant tree (children go DOWN — positive Y)
 function collectDescendants(
-  node: TreeNode,
-  x: number,
-  depth: number,
-  nodes: LayoutNode[],
-  links: LayoutLink[],
-  parentPos: { x: number; y: number } | null,
-  visited: Set<string>,
+  node: TreeNode, x: number, depth: number,
+  nodes: LayoutNode[], links: LayoutLink[],
+  parentPos: { x: number; y: number } | null, visited: Set<string>,
 ): void {
   if (visited.has(node.person.slug)) return;
   visited.add(node.person.slug);
-
   const y = depth * NODE_H;
   nodes.push({ slug: node.person.slug, treeNode: node, x, y });
-
-  if (parentPos) {
-    links.push({ source: parentPos, target: { x, y } });
-  }
-
+  if (parentPos) links.push({ source: parentPos, target: { x, y } });
   if (node.children.length > 0) {
     const spacing = siblingSpacing(node.children.length);
     const totalWidth = (node.children.length - 1) * spacing;
     node.children.forEach((child, i) => {
-      const childX = x - totalWidth / 2 + i * spacing;
-      collectDescendants(child, childX, depth + 1, nodes, links, { x, y }, visited);
+      collectDescendants(child, x - totalWidth / 2 + i * spacing, depth + 1, nodes, links, { x, y }, visited);
     });
   }
 }
@@ -99,22 +76,16 @@ function collectDescendants(
 function buildLayout(root: TreeNode): { nodes: LayoutNode[]; links: LayoutLink[] } {
   const nodes: LayoutNode[] = [];
   const links: LayoutLink[] = [];
-  const visitedAncestors = new Set<string>();
-  const visitedDescendants = new Set<string>();
-
-  // Descendants first (depth 0 is root, marked visited so ancestors don't double-add)
-  collectDescendants(root, 0, 0, nodes, links, null, visitedDescendants);
-
-  // Ancestors — skip the root itself (depth 0) since it's already placed
+  const visitedA = new Set<string>();
+  const visitedD = new Set<string>();
+  collectDescendants(root, 0, 0, nodes, links, null, visitedD);
   const rootPos = { x: 0, y: 0 };
-  visitedAncestors.add(root.person.slug); // don't re-add root
+  visitedA.add(root.person.slug);
   root.parents.forEach((parent, i) => {
     const spacing = siblingSpacing(root.parents.length);
     const totalWidth = (root.parents.length - 1) * spacing;
-    const px = -totalWidth / 2 + i * spacing;
-    collectAncestors(parent, px, 1, nodes, links, rootPos, visitedAncestors);
+    collectAncestors(parent, -totalWidth / 2 + i * spacing, 1, nodes, links, rootPos, visitedA);
   });
-
   return { nodes, links };
 }
 
@@ -124,88 +95,67 @@ function linkPath(src: { x: number; y: number }, tgt: { x: number; y: number }):
 }
 
 export function TreeVisualization({ rootNode, selectedSlug, onExpand, onSelect }: TreeVisualizationProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const [transform, setTransform] = useState<d3.ZoomTransform>(d3.zoomIdentity);
-  const [svgSize, setSvgSize] = useState({ w: 800, h: 500 });
+  const [containerW, setContainerW] = useState(800);
 
-  // Observe SVG container size
   useEffect(() => {
-    const el = svgRef.current?.parentElement;
+    const el = containerRef.current;
     if (!el) return;
     const ro = new ResizeObserver(entries => {
-      const { width } = entries[0].contentRect;
-      setSvgSize(s => ({ ...s, w: Math.max(width, 300) }));
+      setContainerW(Math.max(entries[0].contentRect.width, 300));
     });
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  // Set up d3 zoom
   useEffect(() => {
     if (!svgRef.current) return;
-
     const zoom = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.2, 3])
-      .on('zoom', (event) => {
-        setTransform(event.transform);
-      });
-
+      .on('zoom', (event) => setTransform(event.transform));
     zoomRef.current = zoom;
     d3.select(svgRef.current).call(zoom);
-
-    return () => {
-      d3.select(svgRef.current!).on('.zoom', null);
-    };
+    return () => { d3.select(svgRef.current!).on('.zoom', null); };
   }, []);
 
-  // Center on root when rootNode changes
   useEffect(() => {
     if (!svgRef.current || !zoomRef.current || !rootNode) return;
-
-    const { w, h } = svgSize;
-    const initialTransform = d3.zoomIdentity.translate(w / 2, h / 2);
-    d3.select(svgRef.current)
-      .call(zoomRef.current.transform, initialTransform);
-  }, [rootNode, svgSize.w]);
+    const t = d3.zoomIdentity.translate(containerW / 2, 250);
+    d3.select(svgRef.current).call(zoomRef.current.transform, t);
+  }, [rootNode, containerW]);
 
   const handleZoomIn = useCallback(() => {
-    if (!svgRef.current || !zoomRef.current) return;
-    d3.select(svgRef.current).call(zoomRef.current.scaleBy, 1.3);
+    if (svgRef.current && zoomRef.current) d3.select(svgRef.current).call(zoomRef.current.scaleBy, 1.3);
   }, []);
-
   const handleZoomOut = useCallback(() => {
-    if (!svgRef.current || !zoomRef.current) return;
-    d3.select(svgRef.current).call(zoomRef.current.scaleBy, 1 / 1.3);
+    if (svgRef.current && zoomRef.current) d3.select(svgRef.current).call(zoomRef.current.scaleBy, 1 / 1.3);
   }, []);
-
   const handleReset = useCallback(() => {
-    if (!svgRef.current || !zoomRef.current) return;
-    const { w, h } = svgSize;
-    d3.select(svgRef.current).call(
-      zoomRef.current.transform,
-      d3.zoomIdentity.translate(w / 2, h / 2),
-    );
-  }, [svgSize]);
+    if (svgRef.current && zoomRef.current) {
+      d3.select(svgRef.current).call(zoomRef.current.transform, d3.zoomIdentity.translate(containerW / 2, 250));
+    }
+  }, [containerW]);
 
   if (!rootNode) return null;
 
   const { nodes, links } = buildLayout(rootNode);
-
   const tx = transform.x;
   const ty = transform.y;
   const tk = transform.k;
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '500px', background: colors.bg, borderRadius: '8px', overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '500px', background: colors.bg, borderRadius: '8px', overflow: 'hidden' }}>
+      {/* SVG layer: only draws link lines */}
       <svg
         ref={svgRef}
-        width={svgSize.w}
+        width={containerW}
         height={500}
-        style={{ display: 'block' }}
+        style={{ position: 'absolute', top: 0, left: 0, display: 'block' }}
       >
         <g transform={`translate(${tx},${ty}) scale(${tk})`}>
-          {/* Links */}
           {links.map((link, i) => (
             <path
               key={i}
@@ -216,47 +166,48 @@ export function TreeVisualization({ rootNode, selectedSlug, onExpand, onSelect }
               strokeOpacity={0.6}
             />
           ))}
-
-          {/* Nodes as foreignObject */}
-          {nodes.map(n => {
-            const isSelected = n.slug === selectedSlug;
-            const hasUnloadedParents =
-              !n.treeNode.expanded &&
-              (n.treeNode.person.father != null || n.treeNode.person.mother != null);
-            const hasUnloadedChildren =
-              !n.treeNode.expanded &&
-              (n.treeNode.person.children?.length ?? 0) > 0;
-            const isExpandable = hasUnloadedParents || hasUnloadedChildren;
-
-            return (
-              <foreignObject
-                key={n.slug}
-                x={n.x - CARD_W / 2}
-                y={n.y - CARD_H / 2}
-                width={CARD_W}
-                height={CARD_H}
-              >
-                <div xmlns="http://www.w3.org/1999/xhtml">
-                  <PersonNode
-                    person={n.treeNode.person}
-                    isSelected={isSelected}
-                    isExpandable={isExpandable}
-                    isLoading={n.treeNode.loading}
-                    onExpand={() => onExpand(n.slug)}
-                    onSelect={() => onSelect(n.slug)}
-                  />
-                </div>
-              </foreignObject>
-            );
-          })}
         </g>
       </svg>
 
-      <TreeControls
-        onZoomIn={handleZoomIn}
-        onZoomOut={handleZoomOut}
-        onReset={handleReset}
-      />
+      {/* HTML layer: node cards positioned over the SVG */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+        {nodes.map(n => {
+          const isSelected = n.slug === selectedSlug;
+          const hasUnloadedParents = !n.treeNode.expanded && (n.treeNode.person.father != null || n.treeNode.person.mother != null);
+          const hasUnloadedChildren = !n.treeNode.expanded && (n.treeNode.person.children?.length ?? 0) > 0;
+          const isExpandable = hasUnloadedParents || hasUnloadedChildren;
+
+          const screenX = tx + n.x * tk;
+          const screenY = ty + n.y * tk;
+
+          return (
+            <div
+              key={n.slug}
+              style={{
+                position: 'absolute',
+                left: screenX - (CARD_W * tk) / 2,
+                top: screenY - (CARD_H * tk) / 2,
+                width: CARD_W,
+                height: CARD_H,
+                transform: `scale(${tk})`,
+                transformOrigin: 'top left',
+                pointerEvents: 'auto',
+              }}
+            >
+              <PersonNode
+                person={n.treeNode.person}
+                isSelected={isSelected}
+                isExpandable={isExpandable}
+                isLoading={n.treeNode.loading}
+                onExpand={() => onExpand(n.slug)}
+                onSelect={() => onSelect(n.slug)}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      <TreeControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onReset={handleReset} />
     </div>
   );
 }

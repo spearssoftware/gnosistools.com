@@ -146,7 +146,7 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
   }, []);
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', width: '100%', maxWidth: '640px', margin: '0 auto' }}>
+    <div ref={containerRef} style={{ position: 'relative', width: '100%', maxWidth: '640px', margin: '0 auto', zIndex: 100 }}>
       {showModeToggle && (
         <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
           {(['semantic', 'name'] as const).map(m => (
