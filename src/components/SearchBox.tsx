@@ -44,14 +44,21 @@ const TYPE_COLORS: Record<string, string> = {
   greek_lexicon: '#14b8a6',
 };
 
+interface SearchBoxProps {
+  onSelect?: (slug: string, entityType: string) => void;
+  entityFilter?: string;
+  placeholder?: string;
+  showModeToggle?: boolean;
+}
+
 function fallbackSearch(q: string): NameResult[] {
   const lower = q.toLowerCase();
   return FALLBACK_RESULTS.filter(r => r.name.toLowerCase().includes(lower));
 }
 
-export function SearchBox() {
+export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle = true }: SearchBoxProps = {}) {
   const [query, setQuery] = useState('');
-  const [mode, setMode] = useState<SearchMode>('semantic');
+  const [mode, setMode] = useState<SearchMode>(showModeToggle ? 'semantic' : 'name');
   const [nameResults, setNameResults] = useState<NameResult[]>([]);
   const [semanticResults, setSemanticResults] = useState<SemanticResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -118,7 +125,14 @@ export function SearchBox() {
     setIsOpen(false);
   };
 
-  const results = mode === 'semantic' ? semanticResults : nameResults;
+  const filteredNameResults = entityFilter
+    ? nameResults.filter(r => r.entity_type === entityFilter)
+    : nameResults;
+  const filteredSemanticResults = entityFilter
+    ? semanticResults.filter(r => r.type === entityFilter)
+    : semanticResults;
+
+  const results = mode === 'semantic' ? filteredSemanticResults : filteredNameResults;
   const hasResults = results.length > 0;
 
   useEffect(() => {
@@ -133,35 +147,37 @@ export function SearchBox() {
 
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%', maxWidth: '640px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
-        {(['semantic', 'name'] as const).map(m => (
-          <button
-            key={m}
-            onClick={() => handleModeChange(m)}
-            style={{
-              padding: '6px 14px',
-              fontSize: '13px',
-              fontWeight: 600,
-              borderRadius: '8px',
-              border: 'none',
-              cursor: 'pointer',
-              background: mode === m ? '#3b82f6' : '#334155',
-              color: mode === m ? '#fff' : '#94a3b8',
-              transition: 'background 0.15s, color 0.15s',
-            }}
-          >
-            {m === 'semantic' ? 'Semantic' : 'Name'}
-          </button>
-        ))}
-      </div>
+      {showModeToggle && (
+        <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
+          {(['semantic', 'name'] as const).map(m => (
+            <button
+              key={m}
+              onClick={() => handleModeChange(m)}
+              style={{
+                padding: '6px 14px',
+                fontSize: '13px',
+                fontWeight: 600,
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                background: mode === m ? '#3b82f6' : '#334155',
+                color: mode === m ? '#fff' : '#94a3b8',
+                transition: 'background 0.15s, color 0.15s',
+              }}
+            >
+              {m === 'semantic' ? 'Semantic' : 'Name'}
+            </button>
+          ))}
+        </div>
+      )}
       <input
         type="text"
         value={query}
         onChange={handleChange}
         onFocus={() => hasResults && setIsOpen(true)}
-        placeholder={mode === 'semantic'
+        placeholder={placeholder ?? (mode === 'semantic'
           ? 'Ask anything... "verses about forgiveness"'
-          : 'Search by name... "Moses"'}
+          : 'Search by name... "Moses"')}
         style={{
           width: '100%',
           padding: '16px 20px',
@@ -190,7 +206,7 @@ export function SearchBox() {
           overflowY: 'auto',
         }}>
           {mode === 'semantic'
-            ? semanticResults.map(r => {
+            ? filteredSemanticResults.map(r => {
                 const displayText = r.text.length > 100 ? r.text.slice(0, 100) + '...' : r.text;
                 return (
                   <div
@@ -203,6 +219,7 @@ export function SearchBox() {
                     }}
                     onMouseEnter={e => (e.currentTarget.style.background = '#334155')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                    onClick={() => { onSelect?.(r.slug, r.type); setIsOpen(false); }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                       <span style={{
@@ -225,7 +242,7 @@ export function SearchBox() {
                   </div>
                 );
               })
-            : nameResults.map(r => (
+            : filteredNameResults.map(r => (
                 <div
                   key={`${r.entity_type}-${r.slug}`}
                   style={{
@@ -236,6 +253,7 @@ export function SearchBox() {
                   }}
                   onMouseEnter={e => (e.currentTarget.style.background = '#334155')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                  onClick={() => { onSelect?.(r.slug, r.entity_type); setIsOpen(false); }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontWeight: 600, fontSize: '16px' }}>{r.name}</span>

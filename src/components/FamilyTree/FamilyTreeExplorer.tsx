@@ -6,7 +6,7 @@ import { TreeVisualization } from './TreeVisualization';
 
 interface FamilyTreeExplorerProps {
   initialSlug?: string;
-  onPersonChange?: (slug: string) => void;
+  onPersonChange?: (slug: string, name: string) => void;
 }
 
 // Build a minimal TreeNode from a PersonData and a map of loaded people
@@ -171,8 +171,9 @@ export function FamilyTreeExplorer({ initialSlug = 'jesus-son-of-joseph', onPers
 
   const handleSelect = useCallback((slug: string) => {
     setSelectedSlug(slug);
-    onPersonChange?.(slug);
-  }, [onPersonChange]);
+    const node = rootNode ? findNode(rootNode, slug) : null;
+    onPersonChange?.(slug, node?.person.name ?? slug);
+  }, [onPersonChange, rootNode]);
 
   if (loading) {
     return (
