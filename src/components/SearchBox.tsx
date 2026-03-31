@@ -242,7 +242,12 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
                   </div>
                 );
               })
-            : filteredNameResults.map(r => (
+            : filteredNameResults.map(r => {
+                const nameLower = r.name.toLowerCase().replace(/\s+/g, '-');
+                const disambig = r.slug !== nameLower
+                  ? r.slug.replace(nameLower + '-', '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                  : null;
+                return (
                 <div
                   key={`${r.entity_type}-${r.slug}`}
                   style={{
@@ -257,6 +262,9 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontWeight: 600, fontSize: '16px' }}>{r.name}</span>
+                    {disambig && (
+                      <span style={{ fontSize: '13px', color: '#94a3b8' }}>{disambig}</span>
+                    )}
                     <span style={{
                       fontSize: '11px',
                       padding: '2px 8px',
@@ -271,7 +279,8 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
                     </span>
                   </div>
                 </div>
-              ))
+                );
+              })
           }
         </div>
       )}
