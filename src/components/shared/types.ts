@@ -7,6 +7,10 @@ export interface PersonData {
   death_year?: number;
   birth_year_display?: string;
   death_year_display?: string;
+  earliest_year_mentioned?: number;
+  latest_year_mentioned?: number;
+  earliest_year_mentioned_display?: string;
+  latest_year_mentioned_display?: string;
   birth_place?: string;
   death_place?: string;
   father?: string;
