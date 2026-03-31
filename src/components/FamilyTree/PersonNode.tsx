@@ -16,6 +16,11 @@ function formatYears(person: PersonData): string {
 
   if (birth && death) return `${birth} – ${death}`;
   if (birth) return birth;
+
+  const earliest = person.earliest_year_mentioned_display;
+  const latest = person.latest_year_mentioned_display;
+  if (earliest && latest && earliest !== latest) return `c. ${earliest} – ${latest}`;
+  if (earliest) return `c. ${earliest}`;
   return 'Unknown';
 }
 
