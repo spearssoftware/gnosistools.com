@@ -47,10 +47,14 @@ export async function fetchPeopleBatch(slugs: string[]): Promise<Record<string, 
 export async function fetchEventsForPerson(slug: string): Promise<EventData[]> {
   try {
     const res = await fetch(`/api/events-by-person?slug=${encodeURIComponent(slug)}`);
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`events-by-person returned ${res.status} for ${slug}`);
+      return [];
+    }
     const body = await res.json();
     return body.data || [];
-  } catch {
+  } catch (e) {
+    console.error('Failed to fetch events for', slug, e);
     return [];
   }
 }
