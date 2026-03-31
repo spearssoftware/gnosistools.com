@@ -27,19 +27,23 @@ export async function onRequestGet(context) {
     allEvents.push(...page);
 
     if (total === null) {
-      total = json.total ?? json.meta?.total ?? page.length;
+      total = json.meta?.total ?? page.length;
     }
 
     offset += PAGE_SIZE;
+
+    // Avoid hitting upstream rate limits between pages
+    if (offset < total) {
+      await new Promise((r) => setTimeout(r, 200));
+    }
   } while (offset < total);
 
   const filtered = allEvents
-    .filter((event) => Array.isArray(event.participants) && event.participants.includes(slug))
-    .sort((a, b) => {
-      if (a.sort_key < b.sort_key) return -1;
-      if (a.sort_key > b.sort_key) return 1;
-      return 0;
-    });
+    .filter(
+      (event) =>
+        Array.isArray(event.participants) && event.participants.includes(slug)
+    )
+    .sort((a, b) => (a.sort_key ?? 0) - (b.sort_key ?? 0));
 
   return jsonResponse(200, { data: filtered });
 }

@@ -20,14 +20,17 @@ export function PersonTimeline({ personSlug, personName }: Props) {
     setEvents([]);
     setExpandedSlug(null);
 
-    fetchEventsForPerson(personSlug).then(data => {
-      if (!cancelled) {
-        setEvents(data);
-        setLoading(false);
-      }
-    });
+    // Delay to avoid competing with the tree's initial batch requests
+    const timer = setTimeout(() => {
+      fetchEventsForPerson(personSlug).then(data => {
+        if (!cancelled) {
+          setEvents(data);
+          setLoading(false);
+        }
+      });
+    }, 800);
 
-    return () => { cancelled = true; };
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [personSlug]);
 
   const yearLabel = (event: EventData): string | null => {
