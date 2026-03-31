@@ -14,6 +14,17 @@ function formatSlug(slug: string): string {
     .replace(/\b\w/g, c => c.toUpperCase());
 }
 
+function formatDuration(iso: string): string | null {
+  const match = iso.match(/^(\d+)([YMWD])$/);
+  if (!match) return null;
+  const n = parseInt(match[1], 10);
+  const unit = match[2];
+  if (unit === 'D' && n <= 1) return null;
+  const labels: Record<string, [string, string]> = { Y: ['year', 'years'], M: ['month', 'months'], W: ['week', 'weeks'], D: ['day', 'days'] };
+  const [singular, plural] = labels[unit];
+  return `${n} ${n === 1 ? singular : plural}`;
+}
+
 export function EventCard({ event, isExpanded, onToggle }: Props) {
   const [hovered, setHovered] = useState(false);
 
@@ -47,9 +58,9 @@ export function EventCard({ event, isExpanded, onToggle }: Props) {
         </div>
       )}
 
-      {event.duration && (
+      {event.duration && formatDuration(event.duration) && (
         <div style={{ color: colors.textMuted, fontSize: '12px' }}>
-          {event.duration}
+          {formatDuration(event.duration)}
         </div>
       )}
 
