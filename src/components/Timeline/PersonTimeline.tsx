@@ -11,18 +11,23 @@ interface Props {
 
 export function PersonTimeline({ personSlug, personName }: Props) {
   const [events, setEvents] = useState<EventData[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setEvents([]);
     setExpandedSlug(null);
 
     fetchEventsForPerson(personSlug).then(data => {
-      setEvents(data);
-      setLoading(false);
+      if (!cancelled) {
+        setEvents(data);
+        setLoading(false);
+      }
     });
+
+    return () => { cancelled = true; };
   }, [personSlug]);
 
   const yearLabel = (event: EventData): string | null => {
