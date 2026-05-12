@@ -32,13 +32,13 @@ curl "https://api.gnosistools.com/v1/search?q=moses" \
     {
       "slug": "moses",
       "name": "Moses",
-      "entity_type": "person",
+      "entityType": "person",
       "uuid": "..."
     },
     {
       "slug": "moses-law",
       "name": "Moses, Law of",
-      "entity_type": "dictionary",
+      "entityType": "dictionary",
       "uuid": "..."
     }
   ],

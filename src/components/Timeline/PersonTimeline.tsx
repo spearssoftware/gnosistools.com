@@ -31,8 +31,8 @@ export function PersonTimeline({ personSlug, personName }: Props) {
   }, [personSlug]);
 
   const yearLabel = (event: EventData): string | null => {
-    if (event.start_year_display) return event.start_year_display;
-    if (event.start_year != null) return String(event.start_year);
+    if (event.startYearDisplay) return event.startYearDisplay;
+    if (event.startYear != null) return String(event.startYear);
     return null;
   };
 

@@ -32,8 +32,8 @@ curl "https://api.gnosistools.com/v1/people?q=abraham&limit=5" \
       "slug": "abraham",
       "name": "Abraham",
       "gender": "Male",
-      "birth_year_display": "1998 BC",
-      "verse_count": 290
+      "birthYearDisplay": "1998 BC",
+      "verseCount": 290
     }
   ],
   "meta": { "total": 1, "limit": 5, "offset": 0 }
@@ -61,19 +61,19 @@ curl https://api.gnosistools.com/v1/people/abraham \
 | `uuid` | string | Deterministic UUID v5 |
 | `name` | string | Display name |
 | `gender` | string | `Male` or `Female` |
-| `birth_year` | integer | Astronomical year (negative = BC) |
-| `death_year` | integer | Astronomical year |
-| `birth_year_display` | string | Human-readable (e.g., "1998 BC") |
-| `death_year_display` | string | Human-readable |
-| `birth_place` | string | Place slug |
-| `death_place` | string | Place slug |
+| `birthYear` | integer | Astronomical year (negative = BC) |
+| `deathYear` | integer | Astronomical year |
+| `birthYearDisplay` | string | Human-readable (e.g., "1998 BC") |
+| `deathYearDisplay` | string | Human-readable |
+| `birthPlace` | string | Place slug |
+| `deathPlace` | string | Place slug |
 | `father` | string | Person slug |
 | `mother` | string | Person slug |
 | `siblings` | string[] | Person slugs |
 | `children` | string[] | Person slugs |
 | `partners` | string[] | Person slugs |
-| `verse_count` | integer | Number of verse references |
+| `verseCount` | integer | Number of verse references |
 | `verses` | string[] | OSIS references (e.g., `Gen.11.26`) |
-| `first_mention` | string | First verse reference |
-| `name_meaning` | string | Etymology of the name |
-| `people_groups` | string[] | Group slugs |
+| `firstMention` | string | First verse reference |
+| `nameMeaning` | string | Etymology of the name |
+| `peopleGroups` | string[] | Group slugs |

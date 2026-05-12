@@ -3,6 +3,10 @@ title: Changelog
 description: Version history for the Gnosis API and dataset.
 ---
 
+## v1.0.2 — 2026-05-12 (BREAKING): camelCase response fields
+
+All JSON response field names changed from snake_case to camelCase (e.g., `birth_year` → `birthYear`, `verse_count` → `verseCount`). Query parameter names are unchanged.
+
 ## v1.1.0 — Greek & Groups
 
 - Greek morphology endpoint (`/v1/greek/{osis_ref}`) for word-level NT analysis

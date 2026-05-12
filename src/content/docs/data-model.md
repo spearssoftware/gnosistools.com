@@ -12,22 +12,22 @@ Gnosis models the biblical world as a knowledge graph with interconnected entity
 ### Person
 Biblical figures with family relationships, dates, and verse references.
 - Family tree: `father`, `mother`, `siblings`, `children`, `partners`
-- Geography: `birth_place`, `death_place` (link to Place)
-- Dates: `birth_year`, `death_year` (astronomical years, negative = BC)
-- Enrichment: `name_meaning`, `first_mention`
-- Groups: `people_groups` (link to PeopleGroup)
+- Geography: `birthPlace`, `deathPlace` (link to Place)
+- Dates: `birthYear`, `deathYear` (astronomical years, negative = BC)
+- Enrichment: `nameMeaning`, `firstMention`
+- Groups: `peopleGroups` (link to PeopleGroup)
 
 ### Place
 Geographic locations with coordinates and classifications.
 - Coordinates: `latitude`, `longitude` (where available)
-- Names: `name`, `kjv_name`, `esv_name`, `modern_name`
-- Classification: `feature_type` (City, Region, Water, etc.), `feature_sub_type`
+- Names: `name`, `kjvName`, `esvName`, `modernName`
+- Classification: `featureType` (City, Region, Water, etc.), `featureSubType`
 
 ### Event
 Biblical events with chronological ordering and participants.
-- Timeline: `start_year`, `sort_key` (for ordering), `duration`
+- Timeline: `startYear`, `sortKey` (for ordering), `duration`
 - Relations: `participants` (Person), `locations` (Place)
-- Hierarchy: `parent_event`, `predecessor` (self-references)
+- Hierarchy: `parentEvent`, `predecessor` (self-references)
 
 ### PeopleGroup
 Tribes, ethnic groups, and other named groups with their members.
@@ -59,15 +59,15 @@ Greek lexicon entries from the Dodson dataset with Goodrick-Kohlenberger number 
 ## Relationships
 
 ```
-Person ──birth_place──> Place
+Person ──birthPlace──> Place
 Person ──father/mother──> Person
 Person ──children──> Person
 Event ──participants──> Person
 Event ──locations──> Place
-Event ──parent_event──> Event
-Person ──people_groups──> PeopleGroup
-HebrewWord ──strongs_number──> Strong's
-GreekWord ──strongs_number──> Strong's
+Event ──parentEvent──> Event
+Person ──peopleGroups──> PeopleGroup
+HebrewWord ──strongsNumber──> Strong's
+GreekWord ──strongsNumber──> Strong's
 All entities ──verses──> Verse (OSIS refs)
 ```
 

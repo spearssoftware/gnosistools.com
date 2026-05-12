@@ -35,4 +35,4 @@ Topics contain aspects (sub-categories), each with a list of related verses.
 | `aspects[].label` | string | Aspect description |
 | `aspects[].source` | string | Data source |
 | `aspects[].verses` | string[] | OSIS references |
-| `see_also` | string[] | Related topic slugs |
+| `seeAlso` | string[] | Related topic slugs |

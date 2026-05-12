@@ -22,11 +22,11 @@ curl https://api.gnosistools.com/v1/greek-lexicon/G3056 \
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `strongs_number` | string | Strong's Greek number |
+| `strongsNumber` | string | Strong's Greek number |
 | `uuid` | string | Deterministic UUID v5 |
 | `greek` | string | Greek text |
 | `transliteration` | string | Romanized form |
-| `part_of_speech` | string | Grammatical category |
-| `short_gloss` | string | Brief English meaning |
-| `long_gloss` | string | Extended definition |
-| `gk_number` | string | Goodrick-Kohlenberger number |
+| `partOfSpeech` | string | Grammatical category |
+| `shortGloss` | string | Brief English meaning |
+| `longGloss` | string | Extended definition |
+| `gkNumber` | string | Goodrick-Kohlenberger number |

@@ -3,38 +3,38 @@ export interface PersonData {
   uuid: string;
   name: string;
   gender: string;
-  birth_year?: number;
-  death_year?: number;
-  birth_year_display?: string;
-  death_year_display?: string;
-  earliest_year_mentioned?: number;
-  latest_year_mentioned?: number;
-  earliest_year_mentioned_display?: string;
-  latest_year_mentioned_display?: string;
-  birth_place?: string;
-  death_place?: string;
+  birthYear?: number;
+  deathYear?: number;
+  birthYearDisplay?: string;
+  deathYearDisplay?: string;
+  earliestYearMentioned?: number;
+  latestYearMentioned?: number;
+  earliestYearMentionedDisplay?: string;
+  latestYearMentionedDisplay?: string;
+  birthPlace?: string;
+  deathPlace?: string;
   father?: string;
   mother?: string;
   children?: string[];
   siblings?: string[];
   partners?: string[];
-  verse_count?: number;
-  name_meaning?: string;
-  people_groups?: string[];
+  verseCount?: number;
+  nameMeaning?: string;
+  peopleGroups?: string[];
 }
 
 export interface EventData {
   slug: string;
   uuid: string;
   title: string;
-  start_year?: number;
-  start_year_display?: string;
+  startYear?: number;
+  startYearDisplay?: string;
   duration?: string;
-  sort_key?: number;
+  sortKey?: number;
   participants?: string[];
   locations?: string[];
   verses?: string[];
-  parent_event?: string;
+  parentEvent?: string;
   predecessor?: string;
 }
 

@@ -11,14 +11,14 @@ interface PersonNodeProps {
 }
 
 function formatYears(person: PersonData): string {
-  const birth = person.birth_year_display ?? (person.birth_year != null ? String(Math.abs(person.birth_year)) + (person.birth_year < 0 ? ' BC' : ' AD') : null);
-  const death = person.death_year_display ?? (person.death_year != null ? String(Math.abs(person.death_year)) + (person.death_year < 0 ? ' BC' : ' AD') : null);
+  const birth = person.birthYearDisplay ?? (person.birthYear != null ? String(Math.abs(person.birthYear)) + (person.birthYear < 0 ? ' BC' : ' AD') : null);
+  const death = person.deathYearDisplay ?? (person.deathYear != null ? String(Math.abs(person.deathYear)) + (person.deathYear < 0 ? ' BC' : ' AD') : null);
 
   if (birth && death) return `${birth} – ${death}`;
   if (birth) return birth;
 
-  const earliest = person.earliest_year_mentioned_display;
-  const latest = person.latest_year_mentioned_display;
+  const earliest = person.earliestYearMentionedDisplay;
+  const latest = person.latestYearMentionedDisplay;
   if (earliest && latest && earliest !== latest) return `c. ${earliest} – ${latest}`;
   if (earliest) return `c. ${earliest}`;
   return 'Unknown';

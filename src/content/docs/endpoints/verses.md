@@ -21,7 +21,7 @@ curl https://api.gnosistools.com/v1/verses/Gen.12.1 \
 ```json
 {
   "data": {
-    "osis_ref": "Gen.12.1",
+    "osisRef": "Gen.12.1",
     "people": ["abraham"],
     "places": ["haran"],
     "events": ["call-of-abram"],
@@ -44,9 +44,9 @@ Returns related verses, sorted by community vote count.
 {
   "data": [
     {
-      "from_verse": "Gen.12.1",
-      "to_verse_start": "Acts.7.2",
-      "to_verse_end": null,
+      "fromVerse": "Gen.12.1",
+      "toVerseStart": "Acts.7.2",
+      "toVerseEnd": null,
       "votes": 156
     }
   ],

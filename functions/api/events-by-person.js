@@ -36,8 +36,8 @@ export async function onRequestGet(context) {
   const filtered = allEvents
     .filter((event) => Array.isArray(event.participants) && event.participants.includes(slug))
     .sort((a, b) => {
-      if (a.sort_key < b.sort_key) return -1;
-      if (a.sort_key > b.sort_key) return 1;
+      if (a.sortKey < b.sortKey) return -1;
+      if (a.sortKey > b.sortKey) return 1;
       return 0;
     });
 
