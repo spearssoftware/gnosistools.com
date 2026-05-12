@@ -22,11 +22,11 @@ curl https://api.gnosistools.com/v1/hebrew/Gen.1.1 \
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `word_id` | string | Unique word identifier |
+| `wordId` | string | Unique word identifier |
 | `position` | integer | Word position in verse |
 | `text` | string | Hebrew text |
-| `lemma_raw` | string | Raw lemma form |
-| `strongs_number` | string | Linked Strong's number |
+| `lemmaRaw` | string | Raw lemma form |
+| `strongsNumber` | string | Linked Strong's number |
 | `morph` | string | Morphological tag |
 
-The `strongs_number` can be used to look up the full lexicon entry via the [Strong's endpoint](/endpoints/strongs/).
+The `strongsNumber` can be used to look up the full lexicon entry via the [Strong's endpoint](/endpoints/strongs/).

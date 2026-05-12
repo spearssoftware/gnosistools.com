@@ -22,11 +22,11 @@ curl https://api.gnosistools.com/v1/greek/John.3.16 \
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `word_id` | string | Unique word identifier |
+| `wordId` | string | Unique word identifier |
 | `position` | integer | Word position in verse |
 | `text` | string | Greek text |
 | `lemma` | string | Lemma form |
-| `strongs_number` | string | Linked Strong's number |
+| `strongsNumber` | string | Linked Strong's number |
 | `morph` | string | Morphological tag |
 
-The `strongs_number` can be used to look up the full entry via the [Greek Lexicon endpoint](/endpoints/greek-lexicon/) or the [Strong's endpoint](/endpoints/strongs/).
+The `strongsNumber` can be used to look up the full entry via the [Greek Lexicon endpoint](/endpoints/greek-lexicon/) or the [Strong's endpoint](/endpoints/strongs/).

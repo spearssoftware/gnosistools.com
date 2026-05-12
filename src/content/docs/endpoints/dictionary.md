@@ -34,4 +34,4 @@ Each entry may include definitions from multiple historical sources: Smith's Bib
 | `definitions` | array | List of definitions from different sources |
 | `definitions[].source` | string | Dictionary source (smith, hastings, schaff, hitchcock) |
 | `definitions[].text` | string | Definition text |
-| `scripture_refs` | string[] | Related OSIS references |
+| `scriptureRefs` | string[] | Related OSIS references |

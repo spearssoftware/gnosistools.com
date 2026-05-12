@@ -28,7 +28,7 @@ curl https://api.gnosistools.com/v1/strongs/H1 \
     "transliteration": "'ab",
     "pronunciation": "awb",
     "definition": "A primitive word; father...",
-    "kjv_usage": "chief, (fore-) father(-less), patrimony, principal."
+    "kjvUsage": "chief, (fore-) father(-less), patrimony, principal."
   }
 }
 ```
@@ -43,4 +43,4 @@ curl https://api.gnosistools.com/v1/strongs/H1 \
 | `transliteration` | string | Romanized form |
 | `pronunciation` | string | Phonetic guide |
 | `definition` | string | Full definition text |
-| `kjv_usage` | string | Words used in KJV translation |
+| `kjvUsage` | string | Words used in KJV translation |

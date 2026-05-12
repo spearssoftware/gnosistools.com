@@ -28,7 +28,7 @@ function formatDuration(iso: string): string | null {
 export function EventCard({ event, isExpanded, onToggle }: Props) {
   const [hovered, setHovered] = useState(false);
 
-  const yearLabel = event.start_year_display ?? (event.start_year != null ? String(event.start_year) : null);
+  const yearLabel = event.startYearDisplay ?? (event.startYear != null ? String(event.startYear) : null);
 
   return (
     <div

@@ -15,10 +15,10 @@ Lexicon entries are keyed by 3-letter lexical IDs.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `lexical_id` | string | 3-letter identifier |
+| `lexicalId` | string | 3-letter identifier |
 | `hebrew` | string | Hebrew text |
 | `transliteration` | string | Romanized form |
-| `part_of_speech` | string | Grammatical category |
+| `partOfSpeech` | string | Grammatical category |
 | `gloss` | string | Short English meaning |
-| `strongs_number` | string | Linked Strong's number |
-| `twot_number` | string | Theological Wordbook of the OT reference |
+| `strongsNumber` | string | Linked Strong's number |
+| `twotNumber` | string | Theological Wordbook of the OT reference |

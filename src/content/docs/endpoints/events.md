@@ -17,7 +17,7 @@ GET /v1/events
 | `limit` | integer | 50 | Results per page (max 200) |
 | `offset` | integer | 0 | Pagination offset |
 
-Results are ordered by `sort_key` (chronological order).
+Results are ordered by `sortKey` (chronological order).
 
 ## Get Event
 
@@ -32,12 +32,12 @@ GET /v1/events/{slug}
 | `slug` | string | Unique identifier |
 | `uuid` | string | Deterministic UUID v5 |
 | `title` | string | Event name |
-| `start_year` | integer | Astronomical year |
-| `start_year_display` | string | Human-readable date |
+| `startYear` | integer | Astronomical year |
+| `startYearDisplay` | string | Human-readable date |
 | `duration` | string | Duration description |
-| `sort_key` | float | Chronological ordering value |
+| `sortKey` | float | Chronological ordering value |
 | `participants` | string[] | Person slugs |
 | `locations` | string[] | Place slugs |
 | `verses` | string[] | OSIS references |
-| `parent_event` | string | Parent event slug (for hierarchies) |
+| `parentEvent` | string | Parent event slug (for hierarchies) |
 | `predecessor` | string | Previous event slug (for sequences) |

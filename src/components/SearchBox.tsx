@@ -5,7 +5,7 @@ type SearchMode = 'semantic' | 'name';
 interface NameResult {
   slug: string;
   name: string;
-  entity_type: string;
+  entityType: string;
   uuid: string;
 }
 
@@ -17,18 +17,18 @@ interface SemanticResult {
 }
 
 const FALLBACK_RESULTS: NameResult[] = [
-  { slug: 'abraham', name: 'Abraham', entity_type: 'person', uuid: '' },
-  { slug: 'moses', name: 'Moses', entity_type: 'person', uuid: '' },
-  { slug: 'david', name: 'David', entity_type: 'person', uuid: '' },
-  { slug: 'jerusalem', name: 'Jerusalem', entity_type: 'place', uuid: '' },
-  { slug: 'bethlehem', name: 'Bethlehem', entity_type: 'place', uuid: '' },
-  { slug: 'egypt', name: 'Egypt', entity_type: 'place', uuid: '' },
-  { slug: 'the-exodus', name: 'The Exodus', entity_type: 'event', uuid: '' },
-  { slug: 'the-flood', name: 'The Flood', entity_type: 'event', uuid: '' },
-  { slug: 'paul-apostle', name: 'Paul', entity_type: 'person', uuid: '' },
-  { slug: 'mary-mother-of-jesus', name: 'Mary', entity_type: 'person', uuid: '' },
-  { slug: 'babylon', name: 'Babylon', entity_type: 'place', uuid: '' },
-  { slug: 'the-crucifixion', name: 'The Crucifixion', entity_type: 'event', uuid: '' },
+  { slug: 'abraham', name: 'Abraham', entityType: 'person', uuid: '' },
+  { slug: 'moses', name: 'Moses', entityType: 'person', uuid: '' },
+  { slug: 'david', name: 'David', entityType: 'person', uuid: '' },
+  { slug: 'jerusalem', name: 'Jerusalem', entityType: 'place', uuid: '' },
+  { slug: 'bethlehem', name: 'Bethlehem', entityType: 'place', uuid: '' },
+  { slug: 'egypt', name: 'Egypt', entityType: 'place', uuid: '' },
+  { slug: 'the-exodus', name: 'The Exodus', entityType: 'event', uuid: '' },
+  { slug: 'the-flood', name: 'The Flood', entityType: 'event', uuid: '' },
+  { slug: 'paul-apostle', name: 'Paul', entityType: 'person', uuid: '' },
+  { slug: 'mary-mother-of-jesus', name: 'Mary', entityType: 'person', uuid: '' },
+  { slug: 'babylon', name: 'Babylon', entityType: 'place', uuid: '' },
+  { slug: 'the-crucifixion', name: 'The Crucifixion', entityType: 'event', uuid: '' },
 ];
 
 const TYPE_COLORS: Record<string, string> = {
@@ -62,9 +62,9 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
   const [nameResults, setNameResults] = useState<NameResult[]>([]);
   const [semanticResults, setSemanticResults] = useState<SemanticResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
-  const abortRef = useRef<AbortController>();
+  const abortRef = useRef<AbortController | undefined>(undefined);
 
   const search = async (q: string) => {
     if (!q.trim()) {
@@ -126,7 +126,7 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
   };
 
   const filteredNameResults = entityFilter
-    ? nameResults.filter(r => r.entity_type === entityFilter)
+    ? nameResults.filter(r => r.entityType === entityFilter)
     : nameResults;
   const filteredSemanticResults = entityFilter
     ? semanticResults.filter(r => r.type === entityFilter)
@@ -249,7 +249,7 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
                   : null;
                 return (
                 <div
-                  key={`${r.entity_type}-${r.slug}`}
+                  key={`${r.entityType}-${r.slug}`}
                   style={{
                     padding: '12px 16px',
                     borderBottom: '1px solid #334155',
@@ -258,7 +258,7 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
                   }}
                   onMouseEnter={e => (e.currentTarget.style.background = '#334155')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                  onClick={() => { onSelect?.(r.slug, r.entity_type); setIsOpen(false); }}
+                  onClick={() => { onSelect?.(r.slug, r.entityType); setIsOpen(false); }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontWeight: 600, fontSize: '16px' }}>{r.name}</span>
@@ -269,13 +269,13 @@ export function SearchBox({ onSelect, entityFilter, placeholder, showModeToggle 
                       fontSize: '11px',
                       padding: '2px 8px',
                       borderRadius: '9999px',
-                      background: (TYPE_COLORS[r.entity_type] || '#64748b') + '22',
-                      color: TYPE_COLORS[r.entity_type] || '#64748b',
+                      background: (TYPE_COLORS[r.entityType] || '#64748b') + '22',
+                      color: TYPE_COLORS[r.entityType] || '#64748b',
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
                     }}>
-                      {r.entity_type}
+                      {r.entityType}
                     </span>
                   </div>
                 </div>

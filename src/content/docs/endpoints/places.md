@@ -39,11 +39,11 @@ GET /v1/places/{slug}
 | `slug` | string | Unique identifier |
 | `uuid` | string | Deterministic UUID v5 |
 | `name` | string | Primary name |
-| `kjv_name` | string | Name in the KJV |
-| `esv_name` | string | Name in the ESV |
+| `kjvName` | string | Name in the KJV |
+| `esvName` | string | Name in the ESV |
 | `latitude` | float | Geographic latitude |
 | `longitude` | float | Geographic longitude |
-| `coordinate_source` | string | Source of the coordinates |
-| `feature_type` | string | Classification (City, Region, Water, etc.) |
-| `feature_sub_type` | string | Sub-classification |
-| `modern_name` | string | Modern equivalent name |
+| `coordinateSource` | string | Source of the coordinates |
+| `featureType` | string | Classification (City, Region, Water, etc.) |
+| `featureSubType` | string | Sub-classification |
+| `modernName` | string | Modern equivalent name |
