@@ -91,7 +91,7 @@ Save this key somewhere safe — it cannot be retrieved later.`;
   });
 
   const data = await res.json().catch(() => null);
-  if (!res.ok || !data?.success || data.result.permanent_bounces.length > 0) {
+  if (!res.ok || !data?.success || data.result?.permanent_bounces?.length > 0) {
     console.error("Email send failed", res.status, JSON.stringify(data?.errors ?? []));
     return { ok: false };
   }
