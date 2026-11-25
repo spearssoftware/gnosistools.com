@@ -3,6 +3,9 @@ const RECIPIENTS = {
   "gnosis-general": "info@spearssoftware.com",
 };
 
+const SEND_URL =
+  "https://api.cloudflare.com/client/v4/accounts/55613a1e13193324a5d8823e013cc00a/email/sending/send";
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -26,7 +29,7 @@ export async function onRequestPost(context) {
     return jsonResponse(403, { error: "Turnstile verification failed" });
   }
 
-  const result = await sendEmail({ name, email, message, subject, to }, env.POSTMARK_SERVER_TOKEN);
+  const result = await sendEmail({ name, email, message, subject, to }, env.CF_EMAIL_API_TOKEN);
   if (!result.ok) {
     return jsonResponse(500, { error: "Failed to send message" });
   }
@@ -44,29 +47,28 @@ async function verifyTurnstile(token, secret) {
   return data.success === true;
 }
 
-async function sendEmail({ name, email, message, subject, to }, serverToken) {
+async function sendEmail({ name, email, message, subject, to }, apiToken) {
   const subjectLine = `Gnosis API Inquiry: ${name}`;
 
-  const res = await fetch("https://api.postmarkapp.com/email", {
+  const res = await fetch(SEND_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Postmark-Server-Token": serverToken,
-      Accept: "application/json",
+      Authorization: `Bearer ${apiToken}`,
     },
     body: JSON.stringify({
-      From: to,
-      To: to,
-      ReplyTo: email,
-      Subject: subjectLine,
-      TextBody: `Name: ${name}\nEmail: ${email}\nSource: ${subject}\n\n${message}`,
-      MessageStream: "spearssoftwareforms",
+      from: to,
+      to,
+      reply_to: email,
+      subject: subjectLine,
+      text: `Name: ${name}\nEmail: ${email}\nSource: ${subject}\n\n${message}`,
     }),
   });
 
-  if (!res.ok) {
-    const detail = await res.text();
-    return { ok: false, detail };
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.success || data.result?.permanent_bounces?.length > 0) {
+    console.error("Email send failed", res.status, JSON.stringify(data?.errors ?? []), "bounces:", data?.result?.permanent_bounces?.length ?? 0);
+    return { ok: false };
   }
   return { ok: true };
 }
