@@ -1,3 +1,6 @@
+const SEND_URL =
+  "https://api.cloudflare.com/client/v4/accounts/55613a1e13193324a5d8823e013cc00a/email/sending/send";
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -35,7 +38,7 @@ export async function onRequestPost(context) {
 
   let emailSent = false;
   try {
-    const result = await sendWelcomeEmail({ email, apiKey: api_key, replaced }, env.POSTMARK_SERVER_TOKEN);
+    const result = await sendWelcomeEmail({ email, apiKey: api_key, replaced }, env.CF_EMAIL_API_TOKEN);
     emailSent = result.ok;
   } catch {
     emailSent = false;
@@ -54,7 +57,7 @@ async function verifyTurnstile(token, secret) {
   return data.success === true;
 }
 
-async function sendWelcomeEmail({ email, apiKey, replaced }, serverToken) {
+async function sendWelcomeEmail({ email, apiKey, replaced }, apiToken) {
   const replacedNote = replaced
     ? "\nNote: Your previous API key has been disabled and replaced by this new one.\n"
     : "";
@@ -73,19 +76,17 @@ API reference: https://gnosistools.com/docs/
 
 Save this key somewhere safe — it cannot be retrieved later.`;
 
-  const res = await fetch("https://api.postmarkapp.com/email", {
+  const res = await fetch(SEND_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Postmark-Server-Token": serverToken,
-      Accept: "application/json",
+      Authorization: `Bearer ${apiToken}`,
     },
     body: JSON.stringify({
-      From: "noreply@gnosistools.com",
-      To: email,
-      Subject: "Your Gnosis API Key",
-      TextBody: textBody,
-      MessageStream: "outbound",
+      from: "noreply@gnosistools.com",
+      to: email,
+      subject: "Your Gnosis API Key",
+      text: textBody,
     }),
   });
 
