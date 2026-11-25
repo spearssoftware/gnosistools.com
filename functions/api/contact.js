@@ -65,9 +65,10 @@ async function sendEmail({ name, email, message, subject, to }, apiToken) {
     }),
   });
 
-  if (!res.ok) {
-    const detail = await res.text();
-    return { ok: false, detail };
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.success || data.result.permanent_bounces.length > 0) {
+    console.error("Email send failed", res.status, JSON.stringify(data?.errors ?? []));
+    return { ok: false };
   }
   return { ok: true };
 }
